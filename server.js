@@ -4,13 +4,30 @@ const { Server } = require('socket.io');
 const cors = require('cors');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+
 
 const server = http.createServer(app);
+
+const allowedOrigins = [
+  "https://www.ayum.in",
+  "https://ayum.in",
+  "https://doctor.ayum.in",
+  "https://www.doctor.ayum.in",
+  "http://localhost:3000",
+];
+// Enable CORS for Express
+app.use(cors({
+  origin: allowedOrigins,
+  methods: ["GET", "POST"]
+}));
+
+app.use(express.json());
+
+
+// Enable CORS for Socket.io
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: allowedOrigins ,
     methods: ["GET", "POST"]
   }
 });
